@@ -32,7 +32,6 @@ public class NotificationHelper {
             channel.enableVibration(true);
             channel.setVibrationPattern(new long[]{0, 500, 200, 500});
             channel.setShowBadge(true);
-            // Для Android 8.0+
             channel.setLockscreenVisibility(NotificationCompat.VISIBILITY_PUBLIC);
             notificationManager.createNotificationChannel(channel);
         }
@@ -43,7 +42,7 @@ public class NotificationHelper {
         String body = String.format("%s упала на %.2f%%! Текущая цена: $%.2f",
                 stock.getName(), dropPercent, stock.getCurrentPrice());
 
-        showNotification(title, body, stock.getId(), NotificationCompat.PRIORITY_HIGH, true);
+        showNotification(title, body, (int) stock.getId(), NotificationCompat.PRIORITY_HIGH, true);
     }
 
     public void showStopLossAlert(Stock stock) {
@@ -51,7 +50,7 @@ public class NotificationHelper {
         String body = String.format("%s упала ниже стоп-лосса! Цена: $%.2f (покупка: $%.2f)",
                 stock.getName(), stock.getCurrentPrice(), stock.getBuyPrice());
 
-        showNotification(title, body, stock.getId() + 10000, NotificationCompat.PRIORITY_HIGH, true);
+        showNotification(title, body, (int) stock.getId() + 10000, NotificationCompat.PRIORITY_HIGH, true);
     }
 
     public void showTargetReachedAlert(Stock stock) {
@@ -59,7 +58,7 @@ public class NotificationHelper {
         String body = String.format("%s достигла $%.2f (цель: $%.2f)",
                 stock.getName(), stock.getCurrentPrice(), stock.getTargetPrice());
 
-        showNotification(title, body, stock.getId() + 20000, NotificationCompat.PRIORITY_HIGH, false);
+        showNotification(title, body, (int) stock.getId() + 20000, NotificationCompat.PRIORITY_HIGH, false);
     }
 
     public void showRiseAlert(Stock stock, double risePercent) {
@@ -67,7 +66,7 @@ public class NotificationHelper {
         String body = String.format("%s выросла на %.2f%%! Текущая цена: $%.2f",
                 stock.getName(), risePercent, stock.getCurrentPrice());
 
-        showNotification(title, body, stock.getId() + 30000, NotificationCompat.PRIORITY_DEFAULT, false);
+        showNotification(title, body, (int) stock.getId() + 30000, NotificationCompat.PRIORITY_DEFAULT, false);
     }
 
     public void showBuyOpportunity(Stock stock) {
@@ -75,7 +74,7 @@ public class NotificationHelper {
         String body = String.format("%s опустилась до $%.2f — ниже целевой $%.2f",
                 stock.getName(), stock.getCurrentPrice(), stock.getAlertBelow());
 
-        showNotification(title, body, stock.getId() + 40000, NotificationCompat.PRIORITY_HIGH, true);
+        showNotification(title, body, (int) stock.getId() + 40000, NotificationCompat.PRIORITY_HIGH, true);
     }
 
     public void showSellOpportunity(Stock stock) {
@@ -83,7 +82,7 @@ public class NotificationHelper {
         String body = String.format("%s поднялась до $%.2f — выше целевой $%.2f",
                 stock.getName(), stock.getCurrentPrice(), stock.getAlertAbove());
 
-        showNotification(title, body, stock.getId() + 50000, NotificationCompat.PRIORITY_HIGH, true);
+        showNotification(title, body, (int) stock.getId() + 50000, NotificationCompat.PRIORITY_HIGH, true);
     }
 
     public void showPriceUpdateSummary(int stocksUpdated, int alertsTriggered) {
@@ -116,7 +115,7 @@ public class NotificationHelper {
                     .setVibrate(new long[]{0, 500, 200, 500, 200, 500});
         }
 
-        notificationManager.notify(NOTIFICATION_ID_BASE + (int) id, builder.build());
+        notificationManager.notify(NOTIFICATION_ID_BASE + id, builder.build());
     }
 
     public void cancelAllNotifications() {
