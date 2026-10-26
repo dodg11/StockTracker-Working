@@ -22,8 +22,20 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Create gradlew
+        run: |
+          cat > gradlew << 'EOF'
+          #!/bin/sh
+          APP_HOME=$(cd "${0%/*}" && pwd -P)
+          CLASSPATH=$APP_HOME/gradle/wrapper/gradle-wrapper.jar
+          exec java -classpath "$CLASSPATH" org.gradle.wrapper.GradleWrapperMain "$@"
+          EOF
+          chmod +x gradlew
+
+      - name: Download Gradle wrapper
+        run: |
+          mkdir -p gradle/wrapper
+          wget -q https://raw.githubusercontent.com/gradle/gradle/v8.7.0/gradle/wrapper/gradle-wrapper.jar -O gradle/wrapper/gradle-wrapper.jar
 
       - name: Create local.properties
         run: |
